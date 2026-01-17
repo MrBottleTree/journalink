@@ -1,2 +1,17 @@
-# journalink
-Bridging the gap between students and professors. A centralized hub for sharing research papers and technical blogs, designed to help students identify research interests and SOP opportunities.
+# Journal Link
+
+### The Stack
+* **Frontend:** React
+* **Backend:** Django
+* **DB:** Sqlite3
+* **Infrastructure:** Docker
+
+---
+
+### Quick Start
+You don't need to install Python or Node. Just use Docker.
+
+**1. Clone & Enter**
+```bash
+git clone https://github.com/MrBottleTree/journalink.git
+cd journalink
