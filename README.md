@@ -9,7 +9,6 @@
 ---
 
 ### Quick Start
-You don't need to install Python or Node. Just use Docker.
 
 **1. Clone & Enter**
 ```bash
