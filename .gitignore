@@ -2,4 +2,4 @@
 **/__pycache__/
 **/migrations/
 #ignored env
-'.env'
+.env
