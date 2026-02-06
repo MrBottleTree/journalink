@@ -1,5 +1,14 @@
+venv/
+**/venv/
 **/.venv/
+
+db.sqlite3
+
+*.pyc
 **/__pycache__/
-**/migrations/
+**/migrations/*.pyc
+
 .vscode
-**.env
+
+.env
+*.env
