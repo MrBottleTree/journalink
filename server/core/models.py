@@ -24,25 +24,40 @@ class Post(models.Model):
     def __str__(self):
         return f"Post by {self.author.username} ({self.category})"
 
-class ResearchPaper(models.Model):
-    title = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.title
-
-
-class StarredPaper(models.Model):
+class StarredPost(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="starred_papers"
+        related_name="starred_posts"
     )
-    paper = models.ForeignKey(
-        ResearchPaper,
+    post = models.ForeignKey(
+        Post,
         on_delete=models.CASCADE,
         related_name="starred_by"
     )
     starred_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "paper")
+        unique_together = ("user", "post")
+
+    def __str__(self):
+        return f"{self.user} starred {self.post.id}"
+
+
+class PostTag(models.Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name="tagged_users"
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tagged_posts"
+    )
+
+    class Meta:
+        unique_together = ("post", "user")
+
+    def __str__(self):
+        return f"{self.user.username} tagged in Post {self.post.id}"
