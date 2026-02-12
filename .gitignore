@@ -1,5 +1,16 @@
+# Virtual environments
 **/.venv/
+
+# Python cache
 **/__pycache__/
-**/migrations/
-.vscode
-**.env
+*.pyc
+
+# Environment variables
+**/.env
+
+# Editor config
+.vscode/
+
+# Local database
+**/db.sqlite3
+migrations/
