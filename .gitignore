@@ -13,3 +13,4 @@
 
 # Local database
 **/db.sqlite3
+migrations/
