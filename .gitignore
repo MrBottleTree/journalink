@@ -5,12 +5,10 @@
 **/__pycache__/
 *.pyc
 
-# Environment variables
 **/.env
 
 # Editor config
 .vscode/
 
-# Local database
 **/db.sqlite3
 migrations/
