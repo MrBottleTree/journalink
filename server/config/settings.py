@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'core'
 ]
 
+# Tells Django to use your custom User model instead of the default one
+AUTH_USER_MODEL = 'core.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
