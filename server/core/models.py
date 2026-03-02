@@ -22,63 +22,60 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.role})"
 
+class USER(models.Model):
+    class Choices(models.TextChoices):
+        STUDENT = 'Student', 'Student'
+        PROFESSOR = 'Professor', 'Professor'
+        
+    user_id = models.IntegerField(primary_key=True)
+    username = models.CharField(max_length=50)
+    role = models.CharField(max_length=20, choices=Choices.choices)
+    department = models.CharField(max_length=50)
 
-class Post(models.Model):
-    class Category(models.TextChoices):
-        BLOG = "BLOG", "Blog"
-        ANNOUNCEMENT = "ANNOUNCEMENT", "Announcement"
-        MEDIA = "MEDIA", "Media"
+    def __str__(self):
+        return self.username
 
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="posts"
-    )
-    content = models.TextField()
-    category = models.CharField(
-        max_length=20,
-        choices=Category.choices
-    )
+class POST(models.Model):
+
+    class CategoryChoices(models.TextChoices):
+        ACADEMIC = 'Academic', 'Academic'
+        GENERAL = 'General', 'General'
+        
+    post_id = models.IntegerField(primary_key=True)
+    author = models.ForeignKey(USER, on_delete=models.CASCADE, related_name='posts')
+    content = models.CharField(max_length=300)  
+    category = models.CharField(max_length=50, choices=CategoryChoices.choices)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"Post by {self.author.username} ({self.category})"
+class PROJECT(models.Model):
 
-class StarredPost(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="starred_posts"
-    )
-    post = models.ForeignKey(
-        Post,
-        on_delete=models.CASCADE,
-        related_name="starred_by"
-    )
-    starred_at = models.DateTimeField(auto_now_add=True)
+    class Status(models.TextChoices):
+        PROPOSED = 'Proposed', 'Proposed'
+        ON_GOING = 'On Going', 'On Going'
+        COMPLETED = 'Completed', 'Completed'
 
-    class Meta:
-        unique_together = ("user", "post")
+    project_id = models.IntegerField(primary_key=True)
+    professor = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="projects")
+    title = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.ON_GOING)
 
-    def __str__(self):
-        return f"{self.user} starred {self.post.id}"
+class PROJECT_APPLICATION(models.Model):
+    
+    class Status(models.TextChoices):
+        REJECTED = 'Rejected', 'Rejected'
+        ACCEPTED = 'Accepted', 'Accepted'
+        WAITING = 'Waiting', 'Waiting'
 
+    proj_app_id = models.IntegerField(primary_key=True)
+    project = models.ForeignKey(PROJECT, on_delete=models.CASCADE, related_name="applications")
+    student = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="project_applications")
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.WAITING)
 
-class PostTag(models.Model):
-    post = models.ForeignKey(
-        Post,
-        on_delete=models.CASCADE,
-        related_name="tagged_users"
-    )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="tagged_posts"
-    )
-
-    class Meta:
-        unique_together = ("post", "user")
+class POST_TAGS(models.Model):
+    tag_id = models.IntegerField(primary_key=True)
+    post = models.ForeignKey(POST, on_delete=models.CASCADE, related_name="tags")
+    user = models.ForeignKey(USER, on_delete=models.CASCADE, related_name="tags_in_posts")
 
     def __str__(self):
         return f"{self.user.username} tagged in Post {self.post.id}"
